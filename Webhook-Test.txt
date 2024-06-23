@@ -1,2 +1,0 @@
-This is to verify that the new webhook is working fine
-I just want to confirm that the website-css-pipeline can trigger automatically
