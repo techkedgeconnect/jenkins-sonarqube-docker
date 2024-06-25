@@ -9,10 +9,10 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Git Checkout') {
             steps {
                 // Checkout the code from your repository
-                git 'https://github.com/techkedgeconnect/jenkins-sonarqube-docker.git'
+                git branch: 'main', url: 'https://github.com/techkedgeconnect/jenkins-sonarqube-docker.git'
             }
         }
 
