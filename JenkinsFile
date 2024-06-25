@@ -6,6 +6,8 @@ pipeline {
         DOCKER_TAG = 'latest'
         DOCKER_REGISTRY = 'index.docker.io'
         DOCKER_REGISTRY_CREDENTIALS = 'a28dffc9-3285-402a-a58b-40d008fa0506'  // Replace with your Docker Hub credentials ID
+        SONARQUBE_SERVER = 'SonarScanner-Server'  // Replace with your SonarQube server name in Jenkins
+    }
     }
 
     stages {
@@ -13,6 +15,17 @@ pipeline {
             steps {
                 // Checkout the code from your repository
                 git branch: 'main', url: 'https://github.com/techkedgeconnect/jenkins-sonarqube-docker.git'
+            }
+        }
+
+        stage('SonarQube Scan') {
+            steps {
+                script {
+                    // Run SonarQube scanner
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh 'sonar-scanner -Dsonar.projectKey=sonar.projectKey=CSS-Website-Pipeline -Dsonar.sources=. -Dsonar.host.url=http://18.170.65.230:9000/ -Dsonar.login=sqa_de758403c1a67060b3885ef7f4ef1f480fbdbe06'
+                    }
+                }
             }
         }
 
