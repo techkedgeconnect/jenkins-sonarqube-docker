@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'techkedgeconnect-sample-website'
+        DOCKER_TAG = 'latest'
+        DOCKER_REGISTRY = ''
+        DOCKER_REGISTRY_CREDENTIALS = 'docker-hub-credentials'  // Replace with your Docker Hub credentials ID
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from your repository
+                git 'https://github.com/techkedgeconnect/jenkins-sonarqube-docker.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Login to Docker Hub
+                    docker.withRegistry(DOCKER_REGISTRY, DOCKER_REGISTRY_CREDENTIALS) {
+                        // Push the Docker image to the registry
+                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy Docker Container') {
+            steps {
+                script {
+                    // Stop and remove any existing container
+                    sh "docker rm -f ${DOCKER_IMAGE} || true"
+                    
+                    // Run the Docker container
+                    sh """
+                    docker run -d --name ${DOCKER_IMAGE} -p 3000:80 ${DOCKER_IMAGE}:${DOCKER_TAG}
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace
+            cleanWs()
+        }
+    }
+}
