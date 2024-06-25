@@ -8,8 +8,7 @@ pipeline {
         DOCKER_REGISTRY_CREDENTIALS = 'a28dffc9-3285-402a-a58b-40d008fa0506'  // Replace with your Docker Hub credentials ID
         SONARQUBE_SERVER = 'SonarScanner-Server'  // Replace with your SonarQube server name in Jenkins
     }
-    }
-
+    
     stages {
         stage('Git Checkout') {
             steps {
