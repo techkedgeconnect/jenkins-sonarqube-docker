@@ -22,7 +22,7 @@ pipeline {
                 script {
                     // Run SonarQube scanner
                     withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh 'SonarScanner-Server -Dsonar.projectKey=sonar.projectKey=CSS-Website-Pipeline -Dsonar.sources=. -Dsonar.host.url=http://18.170.65.230:9000/ -Dsonar.login=sqa_de758403c1a67060b3885ef7f4ef1f480fbdbe06'
+                        sh 'Sonar-Scanner -Dsonar.projectKey=sonar.projectKey=CSS-Website-Pipeline -Dsonar.sources=. -Dsonar.host.url=http://18.170.65.230:9000/ -Dsonar.login=sqa_de758403c1a67060b3885ef7f4ef1f480fbdbe06'
                     }
                 }
             }
